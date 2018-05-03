@@ -57,9 +57,10 @@ purge old packages:
 
 docker package repository:
   pkgrepo.{{ repo_state }}:
-    - name: deb https://apt.dockerproject.org/repo {{ grains["os"]|lower }}-{{ grains["oscodename"] }} main
+    #    - name: deb [arch={{grains["osarch"]}}] https://download.docker.com/linux/ubuntu {{ grains["oscodename"] }} stable
+    - name: deb [arch={{grains["osarch"]}}] https://download.docker.com/linux/ubuntu artful stable
     - humanname: {{ grains["os"] }} {{ grains["oscodename"]|capitalize }} Docker Package Repository
-    - keyid: 58118E89F3A912897C070ADBF76221572C52609D
+    - keyid: 9DC858229FC7DD38854AE2D88D81803C0EBFCD88
 {%- endif %}
     - keyserver: hkp://p80.pool.sks-keyservers.net:80
     - file: /etc/apt/sources.list.d/docker.list
@@ -90,6 +91,8 @@ docker package:
     {%- else %}
     {%- if grains['os']|lower in ('amazon', 'fedora', 'suse',) %}
     - name: docker
+    {%- elif grains['os']|lower in ('ubuntu') %}
+    - name: docker-ce
     {%- else %}
     - name: docker-engine
     {%- endif %}
@@ -103,6 +106,8 @@ docker package:
     {%- else %}
     {%- if grains['os']|lower in ('amazon', 'fedora', 'suse',) %}
     - name: docker
+    {%- elif grains['os']|lower in ('ubuntu') %}
+    - name: docker-ce
     {%- else %}
     - name: docker-engine
     {%- endif %}
